@@ -1,0 +1,5 @@
+ec2
+git
+docker-build-publish
+aws-credentials
+dockerhub-notification

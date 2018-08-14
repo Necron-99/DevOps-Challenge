@@ -1,0 +1,23 @@
+version: '2'
+services:
+    jenkins-master:
+        image: jenkins-master
+        cpu_shares: 100
+        mem_limit: 2000M
+        ports:
+            - "8080:8080" 
+            - "50000:50000"
+        secrets:
+            - jenkins-user
+            - jenkins-pass
+        volumes_from: 
+            - jenkins_dv
+    jenkins_dv:
+        image: jenkins_dv
+        cpu_shares: 100
+        mem_limit: 500M
+secrets:
+  jenkins-user:
+      external: true
+  jenkins-pass:
+      external: true
