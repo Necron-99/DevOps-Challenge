@@ -1,0 +1,20 @@
+node("docker") {
+        stage 'Checkout'
+        git 'ssh://git@github.com:Necron-99/nginx.git'
+    
+        stage "build"
+        docker.build "nginx-reverse"
+    
+		stage 'Publish containers'
+    	shouldPublish = input message: 'Publish Containers?', parameters: [[$class: 'ChoiceParameterDefinition', choices: 'yes\nno', description: '', name: 'Deploy']]
+    	if(shouldPublish == "yes") {
+     		echo "Publishing docker containers"
+     		sh "\$(aws ecr get-login)"
+ 
+     		sh "docker tag nginx:latest 228480945348.dkr.ecr.us-east-1.amazonaws.com/nginx:latest"
+     		sh "docker push 228480945348.dkr.ecr.us-east-1.amazonaws.com/nginx:latest"
+
+    	}
+    }
+}
+
